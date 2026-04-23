@@ -1,9 +1,9 @@
-import { createIcons, Cloud, Grid, User, Search, Mic, Camera, Globe, Globe2, Server, MapPin, Clock, X, BookmarkPlus, PlusCircle, LogOut, ChevronDown, Trash2, ExternalLink, Palette, Settings2, Shield, FileText, Link } from 'lucide';
+import { createIcons, Cloud, Grid, User, Search, Mic, Globe, Server, MapPin, Clock, X, BookmarkPlus, PlusCircle, LogOut, ChevronDown, Trash2, ExternalLink, Palette, Settings2, Shield, FileText, Link } from 'lucide';
 import { supabase } from './supabaseClient.js';
 import { checkSession } from './auth.js';
 import { customPrompt, customConfirm } from './dialogs.js';
 
-const lucideIcons = { Cloud, Grid, User, Search, Mic, Camera, Globe, Globe2, Server, MapPin, Clock, X, BookmarkPlus, PlusCircle, LogOut, ChevronDown, Trash2, ExternalLink, Palette, Settings2, Shield, FileText, Link };
+const lucideIcons = { Cloud, Grid, User, Search, Mic, Globe, Server, MapPin, Clock, X, BookmarkPlus, PlusCircle, LogOut, ChevronDown, Trash2, ExternalLink, Palette, Settings2, Shield, FileText, Link };
 
 function refreshIcons() {
   createIcons({ icons: lucideIcons });
@@ -30,11 +30,6 @@ let settings = {
   notepadText: ''
 };
 
-let bookmarks = [
-  { title: 'YouTube', url: 'https://youtube.com', icon: '▶️' },
-  { title: 'GitHub', url: 'https://github.com', icon: '🐙' },
-  { title: 'Twitter', url: 'https://twitter.com', icon: '🐦' }
-];
 
 let webLinks = [
   { title: 'Google', url: 'https://www.google.com' },
@@ -61,16 +56,6 @@ async function initSession() {
       settings.bgUrl = profile.bg_url || '';
     }
 
-    // 2. Load Bookmarks
-    const { data: dbBookmarks } = await supabase
-      .from('bookmarks')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: true });
-    
-    if (dbBookmarks && dbBookmarks.length > 0) {
-      bookmarks = dbBookmarks;
-    }
 
     // 3. Load Web Links
     const { data: dbLinks } = await supabase
@@ -89,14 +74,12 @@ async function initSession() {
     // Local storage fallback
     const localSett = JSON.parse(localStorage.getItem('hp_settings'));
     if (localSett) settings = { ...settings, ...localSett };
-    bookmarks = JSON.parse(localStorage.getItem('hp_bookmarks')) || bookmarks;
     webLinks = JSON.parse(localStorage.getItem('hp_weblinks')) || webLinks;
 
     document.getElementById('user-email-display').textContent = `Not logged in`;
     document.getElementById('settings-user-email').textContent = `Local storage only`;
   }
   applySettings();
-  renderBookmarks();
 }
 
 async function saveState() {
@@ -130,7 +113,6 @@ async function saveState() {
     // (In a real app, you'd add/delete specific rows, but let's keep it simple for now)
   } else {
     localStorage.setItem('hp_settings', JSON.stringify(settings));
-    localStorage.setItem('hp_bookmarks', JSON.stringify(bookmarks));
     localStorage.setItem('hp_weblinks', JSON.stringify(webLinks));
   }
 }
@@ -280,6 +262,7 @@ function applySettings() {
   }
   
   updateEngineUI();
+  renderQuickAccess();
   fetchWeather();
 }
 
@@ -474,8 +457,9 @@ addWeblinkBtn.addEventListener('click', async () => {
 
 
 closeBtns.forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.target.closest('.modal-overlay').classList.remove('active');
+  btn.addEventListener('click', () => {
+    const modal = btn.closest('.modal-overlay');
+    if (modal) modal.classList.remove('active');
   });
 });
 
@@ -531,7 +515,6 @@ autoLocateBtn.addEventListener('click', () => {
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 const voiceBtn = document.getElementById('voice-search-btn');
-const imageBtn = document.getElementById('image-search-btn');
 
 // Dynamic Custom Grid Engine
 const engineTrigger = document.getElementById('engine-trigger');
@@ -636,89 +619,6 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   voiceBtn.style.display = 'none';
 }
 
-const lensForm = document.getElementById('lens-form');
-const lensFileInput = document.getElementById('lens-file-input');
-
-imageBtn.addEventListener('click', () => {
-  lensFileInput.click();
-});
-
-lensFileInput.addEventListener('change', () => {
-  if (lensFileInput.files.length > 0) {
-    lensForm.submit();
-  }
-});
-
-// --- BOOKMARKS ---
-function renderBookmarks() {
-  const grid = document.getElementById('bookmarks-grid');
-  grid.innerHTML = '';
-  
-  bookmarks.forEach((b, i) => {
-    let hostname = 'unknown';
-    try { hostname = new URL(b.url).hostname; } catch(e) {}
-    const iconHTML = `<img src="https://www.google.com/s2/favicons?domain=${hostname}&sz=64" alt="logo" style="width: 24px; height: 24px; border-radius: 4px;" onerror="this.outerHTML='<span style=\\'font-size:1.5rem;\\'>${b.icon || '📌'}</span>'" />`;
-    
-    const a = document.createElement('a');
-    a.href = b.url;
-    a.className = 'bookmark-item';
-    a.innerHTML = `
-      <button class="bookmark-del-btn" title="Remove Bookmark"><i data-lucide="x" style="width:12px; height:12px;"></i></button>
-      <div class="bookmark-icon" style="overflow:hidden;">${iconHTML}</div>
-      <div class="bookmark-title">${b.title}</div>
-    `;
-
-    a.querySelector('.bookmark-del-btn').addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (await customConfirm(`Remove ${b.title}?`)) {
-        const toDelete = bookmarks[i];
-        bookmarks.splice(i, 1);
-
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session && toDelete.id) {
-          await supabase.from('bookmarks').delete().eq('id', toDelete.id);
-        }
-
-        saveState();
-        renderBookmarks();
-      }
-    });
-
-    grid.appendChild(a);
-  });
-  refreshIcons();
-}
-
-document.getElementById('add-curr-bookmark').addEventListener('click', async () => {
-  const title = await customPrompt("Bookmark Title:");
-  if (!title) return;
-  const url = await customPrompt("URL (e.g., https://example.com):");
-  if (!url) return;
-  
-  const finalUrl = url.startsWith('http') ? url : 'https://' + url;
-  const newBookmark = { title, url: finalUrl, icon: '📌', category: 'Share' };
-
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-    const { data, error } = await supabase
-      .from('bookmarks')
-      .insert([{ ...newBookmark, user_id: session.user.id }])
-      .select();
-    if (!error && data) {
-      bookmarks.push(data[0]);
-    } else {
-      bookmarks.push(newBookmark);
-    }
-  } else {
-    bookmarks.push(newBookmark);
-  }
-  
-  renderBookmarks();
-  saveState();
-  waffleModal.classList.remove('active');
-});
-
 
 // --- WEATHER (Open-Meteo) ---
 const getWeatherIcon = (code) => {
@@ -795,18 +695,25 @@ async function fetchWeather() {
 // --- SYSTEM INFO ---
 async function fetchSystemInfo() {
   try {
-    const ipRes = await fetch('https://api.ipify.org?format=json');
-    const ipData = await ipRes.json();
-    document.getElementById('ip4-val').textContent = ipData.ip;
-    
-    const locRes = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
-    const locData = await locRes.json();
-    if (!locData.error) {
-      document.getElementById('ip6-val').textContent = locData.ip || 'N/A';
-      document.getElementById('isp-val').textContent = locData.org || 'Unknown';
-      document.getElementById('loc-val').textContent = `${locData.city}, ${locData.region}, ${locData.country_name}`;
-      document.getElementById('tz-val').textContent = locData.timezone;
-    }
+    // IPv4 Fetch
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('ip4-val').textContent = data.ip;
+        
+        // Fetch location info based on IPv4
+        fetch(`https://ipapi.co/${data.ip}/json/`)
+          .then(res => res.json())
+          .then(locData => {
+            if (!locData.error) {
+              document.getElementById('isp-val').textContent = locData.org || 'Unknown';
+              document.getElementById('loc-val').textContent = `${locData.city}, ${locData.region}, ${locData.country_name}`;
+              document.getElementById('tz-val').textContent = locData.timezone;
+            }
+          });
+      })
+      .catch(() => document.getElementById('ip4-val').textContent = 'N/A');
+
   } catch (e) {
     console.warn("System info fetch failed.");
   }
@@ -814,3 +721,59 @@ async function fetchSystemInfo() {
 
 initSession();
 fetchSystemInfo();
+
+// --- QUICK ACCESS ---
+const quickAccessSites = [
+  { title: 'Google', url: 'https://www.google.com' },
+  { title: 'YouTube', url: 'https://www.youtube.com' },
+  { title: 'Facebook', url: 'https://www.facebook.com' },
+  { title: 'Instagram', url: 'https://www.instagram.com' },
+  { title: 'WhatsApp', url: 'https://web.whatsapp.com' },
+  { title: 'Twitter', url: 'https://twitter.com' },
+  { title: 'Amazon', url: 'https://www.amazon.com' },
+  { title: 'Wikipedia', url: 'https://www.wikipedia.org' },
+  { title: 'Netflix', url: 'https://www.netflix.com' },
+  { title: 'Reddit', url: 'https://www.reddit.com' },
+  { title: 'LinkedIn', url: 'https://www.linkedin.com' },
+  { title: 'Pinterest', url: 'https://www.pinterest.com' },
+  { title: 'eBay', url: 'https://www.ebay.com' },
+  { title: 'TikTok', url: 'https://www.tiktok.com' },
+  { title: 'Twitch', url: 'https://www.twitch.tv' },
+  { title: 'ChatGPT', url: 'https://chat.openai.com' },
+  { title: 'GitHub', url: 'https://github.com' },
+  { title: 'Stack Overflow', url: 'https://stackoverflow.com' },
+  { title: 'Discord', url: 'https://discord.com' },
+  { title: 'Spotify', url: 'https://www.spotify.com' },
+  { title: 'Quora', url: 'https://www.quora.com' },
+  { title: 'Yahoo', url: 'https://www.yahoo.com' },
+  { title: 'Bing', url: 'https://www.bing.com' },
+  { title: 'DuckDuckGo', url: 'https://duckduckgo.com' }
+];
+
+function renderQuickAccess() {
+  const container = document.getElementById('quick-access-container');
+  if (!container) return;
+
+  container.innerHTML = quickAccessSites.map(site => {
+    let domain = new URL(site.url).hostname;
+    
+    // Clean up subdomains for better favicon matching (e.g., web.whatsapp.com -> whatsapp.com)
+    let iconDomain = domain;
+    if (domain.includes('whatsapp.com')) iconDomain = 'whatsapp.com';
+    if (domain.includes('openai.com')) iconDomain = 'openai.com';
+
+    const iconUrl = `https://www.google.com/s2/favicons?domain=${iconDomain}&sz=64`;
+    
+    return `
+      <a href="${site.url}" class="quick-access-item" target="${settings.searchNewTab ? '_blank' : '_self'}">
+        <div class="quick-access-icon-wrapper">
+          <img src="${iconUrl}" alt="${site.title}" class="quick-access-icon" onerror="this.src='/favicon.svg'">
+        </div>
+        <span class="quick-access-title">${site.title}</span>
+      </a>
+    `;
+  }).join('');
+}
+
+// Render Quick Access initially
+renderQuickAccess();

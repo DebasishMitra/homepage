@@ -108,7 +108,35 @@ function renderCategories() {
     });
     wrapper.appendChild(btn);
     
-    if (categories.length > 1) {
+      const editCatBtn = document.createElement('button');
+      editCatBtn.className = 'icon-btn';
+      editCatBtn.style.padding = '0.5rem';
+      editCatBtn.style.color = 'var(--text-secondary)';
+      editCatBtn.title = "Rename Category";
+      editCatBtn.innerHTML = `<i data-lucide="edit" style="width:16px;height:16px;"></i>`;
+      
+      editCatBtn.addEventListener('click', async () => {
+        const newName = await customPrompt("Rename Category:", cat);
+        if (newName && newName !== cat && !categories.includes(newName)) {
+          // Update bookmarks in this category
+          bookmarks = bookmarks.map(b => b.category === cat ? { ...b, category: newName } : b);
+          // Update categories list
+          const index = categories.indexOf(cat);
+          if (index !== -1) categories[index] = newName;
+          
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            await supabase.from('bookmarks').update({ category: newName }).eq('user_id', session.user.id).eq('category', cat);
+          }
+          
+          if (activeCategory === cat) activeCategory = newName;
+          saveState();
+          renderCategories();
+          renderBookmarks();
+        }
+      });
+      wrapper.appendChild(editCatBtn);
+
       const delBtn = document.createElement('button');
       delBtn.className = 'icon-btn';
       delBtn.style.padding = '0.5rem';
@@ -139,11 +167,10 @@ function renderCategories() {
       });
 
       wrapper.appendChild(delBtn);
-    }
     
     listEl.appendChild(wrapper);
   });
-  createIcons({ icons: { X } });
+  createIcons({ icons: { X, Edit } });
 }
 
 function renderBookmarks() {
@@ -201,19 +228,34 @@ function renderBookmarks() {
 
     div.querySelector('.edit-btn').addEventListener('click', async () => {
       const newTitle = await customPrompt("New Title:", b.title);
-      if(!newTitle) return;
+      if (!newTitle) return;
       const newUrl = await customPrompt("New URL:", b.url);
-      if(!newUrl) return;
+      if (!newUrl) return;
+      const newCat = await customPrompt("Category:", b.category);
+      if (!newCat) return;
+
       b.title = newTitle;
       b.url = newUrl;
+      b.category = newCat;
+
+      if (!categories.includes(newCat)) {
+        categories.push(newCat);
+        saveState();
+        renderCategories();
+      }
 
       const { data: { session } } = await supabase.auth.getSession();
       if (session && b.id) {
-        await supabase.from('bookmarks').update({ title: b.title, url: b.url }).eq('id', b.id);
+        await supabase.from('bookmarks').update({ 
+          title: b.title, 
+          url: b.url, 
+          category: b.category 
+        }).eq('id', b.id);
       }
 
       saveState();
       renderBookmarks();
+      renderCategories(); // Update counts
     });
 
 

@@ -1,10 +1,10 @@
-import { createIcons, BookOpen, Plus, X, Trash2, Edit3 } from 'lucide';
+import { createIcons, BookOpen, Plus, X, Trash2, Edit3, Save } from 'lucide';
 import { supabase } from './supabaseClient.js';
 import { checkSession } from './auth.js';
 import { customConfirm } from './dialogs.js';
 
 createIcons({
-  icons: { BookOpen, Plus, X, Trash2, Edit3 }
+  icons: { BookOpen, Plus, X, Trash2, Edit3, Save }
 });
 
 let notes = [];
@@ -15,6 +15,8 @@ const editorArea = document.getElementById('editor-area');
 const editorEmpty = document.getElementById('editor-empty');
 const titleInput = document.getElementById('editor-title');
 const bodyInput = document.getElementById('editor-body');
+const wordCountEl = document.getElementById('word-count');
+const saveBtn = document.getElementById('save-note-btn');
 
 async function init() {
   const session = await checkSession();
@@ -27,9 +29,14 @@ async function init() {
       .from('notes')
       .select('*')
       .eq('user_id', userId)
-      .order('updated_at', { ascending: false });
-    
-    if (dbNotes) notes = dbNotes;
+    if (dbNotes) {
+      notes = dbNotes.map(n => ({
+        id: n.id,
+        title: n.title,
+        content: n.content,
+        updatedAt: new Date(n.updated_at || n.updatedAt).getTime()
+      }));
+    }
     
     // Migration framework: Convert old metadata notepad to true notes
     const userMetadata = session.user.user_metadata;
@@ -121,7 +128,21 @@ function openNote(id) {
   titleInput.value = n.title;
   bodyInput.value = n.content;
   
+  updateWordCount(n.content);
   renderSidebar(); 
+}
+
+function updateWordCount(text) {
+  if (!wordCountEl) return;
+  const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+  wordCountEl.textContent = words.length;
+  
+  if (words.length > 200) {
+    wordCountEl.style.color = '#ef4444'; // Red if over limit
+  } else {
+    wordCountEl.style.color = 'var(--text-secondary)';
+  }
+  return words.length;
 }
 
 let saveTimeout = null;
@@ -130,28 +151,76 @@ function handleEdit() {
   if (!activeNoteId) return;
   const n = notes.find(x => x.id === activeNoteId);
   if (n) {
+    let content = bodyInput.value;
+    const wordCount = updateWordCount(content);
+
+    // Enforce 200 word limit
+    if (wordCount > 200) {
+      const words = content.trim().split(/\s+/).filter(w => w.length > 0);
+      content = words.slice(0, 200).join(' ');
+      bodyInput.value = content;
+      updateWordCount(content);
+    }
+
     n.title = titleInput.value;
-    n.content = bodyInput.value;
+    n.content = content;
     n.updatedAt = Date.now();
     
     renderSidebar();
 
     clearTimeout(saveTimeout);
-    saveTimeout = setTimeout(async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session && n.id) {
-        await supabase.from('notes').upsert({
-          id: n.id,
-          user_id: session.user.id,
-          title: n.title,
-          content: n.content,
-          updated_at: new Date().toISOString()
-        });
-      }
-      saveState();
-    }, 1000);
-
+    saveTimeout = setTimeout(forceSave, 1000);
   }
+}
+
+async function forceSave() {
+  if (!activeNoteId) return;
+  const n = notes.find(x => x.id === activeNoteId);
+  if (!n) return;
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session && n.id) {
+    // Check if ID is a valid UUID (simple check for dash presence)
+    const isUUID = n.id.includes('-');
+    
+    if (isUUID) {
+      await supabase.from('notes').upsert({
+        id: n.id,
+        user_id: session.user.id,
+        title: n.title,
+        content: n.content,
+        updated_at: new Date(n.updatedAt).toISOString()
+      });
+    } else {
+      // It's a local note, insert it and get the new ID
+      const { data, error } = await supabase.from('notes').insert([{
+        user_id: session.user.id,
+        title: n.title,
+        content: n.content,
+        updated_at: new Date(n.updatedAt).toISOString()
+      }]).select();
+      
+      if (!error && data && data[0]) {
+        n.id = data[0].id;
+        activeNoteId = n.id;
+        renderSidebar();
+      }
+    }
+  }
+  saveState();
+  
+  // Visual feedback for save
+  saveBtn.style.color = '#22c55e'; // Green
+  setTimeout(() => {
+    saveBtn.style.color = 'var(--accent-color)';
+  }, 1000);
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener('click', () => {
+    clearTimeout(saveTimeout);
+    forceSave();
+  });
 }
 
 titleInput.addEventListener('input', handleEdit);
@@ -170,15 +239,20 @@ document.getElementById('create-note-btn').addEventListener('click', async () =>
     const { data, error } = await supabase
       .from('notes')
       .insert([{
-        id: newNote.id,
         user_id: session.user.id,
         title: newNote.title,
         content: newNote.content
       }])
       .select();
-    if (!error && data) {
-       notes.unshift(data[0]);
-       activeNoteId = data[0].id;
+    if (!error && data && data[0]) {
+       const syncedNote = {
+         id: data[0].id,
+         title: data[0].title,
+         content: data[0].content,
+         updatedAt: new Date(data[0].updated_at).getTime()
+       };
+       notes.unshift(syncedNote);
+       activeNoteId = syncedNote.id;
     } else {
        notes.unshift(newNote);
        activeNoteId = newNote.id;
