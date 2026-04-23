@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homepage</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <div id="weather-widget" class="solid-panel" title="Click to view details"
+        style="padding: 0.5rem 1rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-weight: 500;">
+        <i data-lucide="cloud"></i> <span id="weather-text">Loading Weather...</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button id="waffle-btn" class="icon-btn" title="Menu">
+        <i data-lucide="grid"></i>
+      </button>
+      <button id="profile-btn" class="icon-btn" title="Settings / Profile">
+        <i data-lucide="user" id="default-profile-icon"></i>
+        <img id="custom-profile-img"
+          style="display:none; width:32px; height:32px; border-radius:50%; object-fit:cover;" />
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Interactive Clock -->
+    <div id="clock-container" class="clock-style-1">
+      <div id="clock-text">12:00</div>
+      <div id="clock-analog" style="display: none;">
+        <div class="analog-face">
+          <div class="hand hour-hand" id="hour-hand"></div>
+          <div class="hand min-hand" id="min-hand"></div>
+          <div class="hand sec-hand" id="sec-hand"></div>
+          <div class="analog-center"></div>
+          <!-- Marks -->
+          <div class="mark m12"></div>
+          <div class="mark m3"></div>
+          <div class="mark m6"></div>
+          <div class="mark m9"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search System -->
+    <div id="search-container">
+      <form id="search-form" class="search-wrapper solid-panel" style="display: flex;">
+
+        <!-- Dynamic Grid Select Replacement -->
+        <div id="custom-engine-select-wrapper">
+          <div id="engine-trigger" title="Select Search Engine">
+            <span id="engine-trigger-text">Google</span>
+            <i data-lucide="chevron-down" style="width:16px;"></i>
+          </div>
+
+          <div id="engine-dropdown-grid" class="solid-panel" style="display: none;">
+            <div class="engine-grid-section">
+              <h4>Standard Browsers</h4>
+              <div class="engine-grid">
+                <div class="engine-item" data-val="https://www.google.com/search?q=">Google</div>
+                <div class="engine-item" data-val="https://www.bing.com/search?q=">Bing</div>
+                <div class="engine-item" data-val="https://search.yahoo.com/search?p=">Yahoo</div>
+                <div class="engine-item" data-val="https://yandex.com/search/?text=">Yandex</div>
+                <div class="engine-item" data-val="https://www.ask.com/web?q=">Ask</div>
+                <div class="engine-item" data-val="https://search.aol.com/aol/search?q=">AOL</div>
+                <div class="engine-item" data-val="https://www.baidu.com/s?wd=">Baidu</div>
+              </div>
+            </div>
+            <div class="engine-grid-section">
+              <h4>AI Engines</h4>
+              <div class="engine-grid">
+                <div class="engine-item" data-val="https://www.google.com/search?udm=50&q=">Google AI</div>
+                <div class="engine-item" data-val="https://duckduckgo.com/?q=">DuckDuckGo AI</div>
+                <div class="engine-item" data-val="https://www.perplexity.ai/search?q=">Perplexity</div>
+                <div class="engine-item" data-val="https://grok.com/search?q=">Grok</div>
+                <div class="engine-item" data-val="https://chat.deepseek.com/search?q=">DeepSeek</div>
+                <div class="engine-item" data-val="https://gemini.google.com/app?q=">Gemini</div>
+                <div class="engine-item" data-val="https://chat.openai.com/?q=">ChatGPT</div>
+                <div class="engine-item" data-val="https://copilot.microsoft.com/?q=">Copilot</div>
+                <div class="engine-item" data-val="https://you.com/search?q=">You.com</div>
+              </div>
+            </div>
+            <div class="engine-grid-section">
+              <h4>Privacy & Others</h4>
+              <div class="engine-grid">
+                <div class="engine-item" data-val="https://duckduckgo.com/?q=">DuckDuckGo</div>
+                <div class="engine-item" data-val="https://search.brave.com/search?q=">Brave</div>
+                <div class="engine-item" data-val="https://www.ecosia.org/search?q=">Ecosia</div>
+                <div class="engine-item" data-val="https://www.mojeek.com/search?q=">Mojeek</div>
+                <div class="engine-item" data-val="https://www.privacywall.org/search/secure/?q=">PrivacyWall</div>
+                <div class="engine-item" data-val="https://swisscows.com/web?query=">Swisscows</div>
+                <div class="engine-item" data-val="https://www.qwant.com/?q=">Qwant</div>
+                <div class="engine-item" data-val="https://karmanow.com/search?q=">Karma</div>
+                <div class="engine-item" data-val="https://en.wikipedia.org/wiki/Special:Search?search=">Wikipedia</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <input type="text" id="search-input" placeholder="Search the web..." autocomplete="off" required />
+        <div class="search-actions">
+          <button type="button" id="voice-search-btn" class="icon-btn" title="Voice Search">
+            <i data-lucide="mic"></i>
+          </button>
+          <button type="button" id="image-search-btn" class="icon-btn" title="Image Search via Google Lens">
+            <i data-lucide="camera"></i>
+          </button>
+          <button type="submit" class="icon-btn" title="Search">
+            <i data-lucide="search"></i>
+          </button>
+        </div>
+      </form>
+
+      <!-- Hidden Google Lens Upload Form -->
+      <form id="lens-form" action="https://lens.google.com/upload" method="post" enctype="multipart/form-data"
+        target="_blank" style="display:none;">
+        <input type="file" id="lens-file-input" name="encoded_image" accept="image/jpeg,image/png,image/webp" />
+      </form>
+    </div>
+
+    <!-- Quick Access Bookmarks -->
+    <div id="bookmarks-grid">
+      <!-- Rendered by JS -->
+    </div>
+  </main>
+
+  <!-- Footer System Info -->
+  <footer>
+    <div id="system-info">
+      <span class="sys-info-item"><i data-lucide="globe"></i> IPv4: <span id="ip4-val">Loading...</span></span>
+      <span class="sys-info-item"><i data-lucide="globe-2"></i> IPv6: <span id="ip6-val">Loading...</span></span>
+      <span class="sys-info-item"><i data-lucide="server"></i> ISP: <span id="isp-val">Loading...</span></span>
+      <span class="sys-info-item"><i data-lucide="map-pin"></i> Location: <span id="loc-val">Loading...</span></span>
+      <span class="sys-info-item"><i data-lucide="clock"></i> Zone: <span id="tz-val">Loading...</span></span>
+    </div>
+  </footer>
+
+  <!-- Waffle Menu Modal -->
+  <div id="waffle-modal" class="modal-overlay">
+    <div class="modal-content solid-panel">
+      <button class="icon-btn modal-close" title="Close"><i data-lucide="x"></i></button>
+      <h2 class="modal-title">Apps</h2>
+      <div id="waffle-menu">
+        <button class="waffle-btn" id="open-notepad-btn">
+          <i data-lucide="file-text"></i> Notepad
+        </button>
+        <button class="waffle-btn" id="open-web-link-btn">
+          <i data-lucide="link"></i> Web Link
+        </button>
+        <hr style="border-color: var(--panel-border); margin: 0.5rem 0;" />
+        <button class="waffle-btn" id="open-bookmark-mgr">
+          <i data-lucide="bookmark-plus"></i> Manager Bookmarks
+        </button>
+        <button class="waffle-btn" id="add-curr-bookmark">
+          <i data-lucide="plus-circle"></i> Add Custom Bookmark
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-content glass-panel" style="max-width: 800px; padding: 1.5rem;">
+      <button class="icon-btn modal-close" title="Close"><i data-lucide="x"></i></button>
+
+      <div class="settings-dashboard">
+        <!-- Sidebar Navigation -->
+        <aside class="settings-sidebar">
+          <h2 class="modal-title" style="margin-bottom: 2rem;">Settings</h2>
+          <nav>
+            <button class="settings-nav-btn active" data-tab="profile-tab">
+              <i data-lucide="user"></i> Profile
+            </button>
+            <button class="settings-nav-btn" data-tab="appearance-tab">
+              <i data-lucide="palette"></i> Appearance
+            </button>
+            <button class="settings-nav-btn" data-tab="preference-tab">
+              <i data-lucide="settings-2"></i> Preference
+            </button>
+            <button class="settings-nav-btn" data-tab="account-tab">
+              <i data-lucide="shield"></i> Account
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="settings-main">
+          <!-- Profile Tab -->
+          <section id="profile-tab" class="settings-page active">
+            <div class="profile-overview">
+              <div class="profile-avatar-wrapper">
+                <img id="settings-profile-img" src="/favicon.svg" alt="Profile" />
+              </div>
+              <div class="profile-info">
+                <h4 id="settings-display-name">Guest</h4>
+                <p id="settings-user-email">guest@example.com</p>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>Personal Details</h3>
+              <div class="setting-row">
+                <span>Display Name</span>
+                <input type="text" id="profile-name" class="setting-input" placeholder="Your Name" />
+              </div>
+              <div class="setting-row">
+                <span>Avatar Source</span>
+                <div style="display:flex; flex-direction:column; gap:0.5rem; width: 220px;">
+                  <input type="file" id="profile-upload" accept="image/*"
+                    style="font-size: 0.8rem; color: var(--text-secondary);" title="Upload local image" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Appearance Tab -->
+          <section id="appearance-tab" class="settings-page">
+            <div class="settings-section">
+              <h3>Theme & Style</h3>
+              <div class="setting-row">
+                <span>Dark Mode</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="dark-mode-toggle" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="setting-row">
+                <span>Custom Background</span>
+                <div style="display:flex; flex-direction:column; gap:0.5rem; width: 220px;">
+                  <input type="file" id="bg-upload" accept="image/*"
+                    style="font-size: 0.8rem; color: var(--text-secondary);" title="Upload local image" />
+                </div>
+              </div>
+              <div class="setting-row">
+                <span>Base Page Color</span>
+                <input type="color" id="bg-color-picker" class="setting-input"
+                  style="padding: 0; width: 40px; height: 40px;" />
+              </div>
+              <div class="setting-row">
+                <span>Accent Color</span>
+                <input type="color" id="accent-color-picker" class="setting-input"
+                  style="padding: 0; width: 40px; height: 40px;" />
+              </div>
+            </div>
+          </section>
+
+          <!-- Preference Tab -->
+          <section id="preference-tab" class="settings-page">
+            <div class="settings-section">
+              <h3>Dashboard Prefs</h3>
+              <div class="setting-row">
+                <span>Clock Style</span>
+                <select id="clock-style-select" class="setting-select" style="width: 180px;">
+                  <option value="1">Modern Minimal</option>
+                  <option value="2">Hacker Neon</option>
+                  <option value="3">Bold Italic</option>
+                  <option value="4">Analog Clock</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <span>Time Format</span>
+                <select id="time-format-select" class="setting-select" style="width: 180px;">
+                  <option value="12">12 Hour</option>
+                  <option value="24">24 Hour</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <span>Weather City</span>
+                <div style="display:flex; flex-direction:column; gap:0.5rem; width: 180px;">
+                  <input type="text" id="weather-location" class="setting-input" placeholder="E.g., London, UK" />
+                  <button type="button" id="auto-locate-btn" class="waffle-btn" style="padding: 0.25rem;">
+                    <i data-lucide="map-pin" style="width: 14px;"></i> Auto Locate
+                  </button>
+                </div>
+              </div>
+              <div class="setting-row">
+                <span>Default Search Engine</span>
+                <select id="default-search-select" class="setting-select" style="width: 180px;">
+                  <option value="https://www.google.com/search?q=">Google</option>
+                  <option value="https://www.bing.com/search?q=">Bing</option>
+                  <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
+                  <option value="https://www.google.com/search?udm=50&q=">Google AI</option>
+                  <option value="https://www.perplexity.ai/search?q=">Perplexity</option>
+                  <option value="https://chat.openai.com/?q=">ChatGPT</option>
+                  <option value="https://search.brave.com/search?q=">Brave</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <span>Search in New Tab</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="search-new-tab-toggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- Account Tab -->
+          <section id="account-tab" class="settings-page">
+            <div class="settings-section">
+              <h3>Account Security</h3>
+              <p id="user-email-display" style="font-size:0.9rem; margin-bottom:1.5rem; color:var(--text-secondary);">
+              </p>
+              <button id="logout-btn" class="waffle-btn"
+                style="border-color: #ef4444; color: #ef4444; width: auto; padding: 0.75rem 2rem;">
+                <i data-lucide="log-out"></i> Log Out of System
+              </button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weather Extended Modal -->
+  <div id="weather-modal" class="modal-overlay">
+    <div class="modal-content solid-panel" style="max-width: 600px;">
+      <button class="icon-btn modal-close" title="Close"><i data-lucide="x"></i></button>
+      <h2 class="modal-title">Weather Details</h2>
+
+      <div id="weather-current-details" style="display: flex; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <!-- Populated by JS -->
+      </div>
+
+      <h3>7-Day Forecast</h3>
+      <div id="weather-forecast-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 1rem; margin-top: 1rem;">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Notepad Modal -->
+  <div id="notepad-modal" class="modal-overlay">
+    <div class="modal-content solid-panel"
+      style="max-width: 600px; height: 70vh; display: flex; flex-direction: column;">
+      <button class="icon-btn modal-close" title="Close"><i data-lucide="x"></i></button>
+      <h2 class="modal-title">Notepad</h2>
+      <textarea id="notepad-textarea"
+        style="flex: 1; border-radius: 8px; padding: 1rem; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--panel-border); outline: none; font-family: inherit; font-size: 1rem; resize: none; margin-bottom: 1rem;"
+        placeholder="Type your notes here... They are automatically saved."></textarea>
+      <button id="clear-notepad-btn" class="waffle-btn" style="border-color: #ef4444; color: #ef4444;">
+        <i data-lucide="trash-2"></i> Clear Notes
+      </button>
+    </div>
+  </div>
+
+  <!-- Web Link Modal -->
+  <div id="weblink-modal" class="modal-overlay">
+    <div class="modal-content solid-panel"
+      style="max-width: 500px; max-height: 80vh; display: flex; flex-direction: column;">
+      <button class="icon-btn modal-close" title="Close"><i data-lucide="x"></i></button>
+      <h2 class="modal-title">Web Links</h2>
+      <div id="weblink-list"
+        style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; min-height: 100px;">
+        <!-- JS Rendered -->
+      </div>
+      <button id="add-weblink-btn" class="waffle-btn"
+        style="border-color: var(--accent-color); color: var(--accent-color);">
+        <i data-lucide="plus-circle"></i> Add New Link
+      </button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
