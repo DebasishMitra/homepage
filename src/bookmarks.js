@@ -3,8 +3,10 @@ import { supabase } from './supabaseClient.js';
 import { checkSession } from './auth.js';
 import { customPrompt, customConfirm } from './dialogs.js';
 
+const lucideIcons = { BookmarkPlus, Plus, X, Trash2, Edit, Bookmark, Download, Upload };
+
 createIcons({
-  icons: { BookmarkPlus, Plus, X, Trash2, Edit, Bookmark, Download, Upload }
+  icons: lucideIcons
 });
 
 const DEFAULT_CATEGORIES = ['Account', 'Bank', 'Dev', 'Social Media', 'Finance', 'Health', 'Entertainment', 'Shopping', 'Tools', 'AI', 'Share'];
@@ -170,7 +172,7 @@ function renderCategories() {
     
     listEl.appendChild(wrapper);
   });
-  createIcons({ icons: { X, Edit } });
+  createIcons({ icons: lucideIcons });
 }
 
 function renderBookmarks() {
@@ -261,7 +263,7 @@ function renderBookmarks() {
 
     container.appendChild(div);
   });
-  createIcons({ icons: { Edit, Trash2 } });
+  createIcons({ icons: lucideIcons });
 }
 
 const addCategoryForm = document.getElementById('add-category-form');
