@@ -139,10 +139,10 @@
       gap: 1rem;
     }
   </style>
-  <script type="module" crossorigin src="./assets/notepad-iixHWZ_U.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/auth-CsSrB7Sv.js">
-  <link rel="modulepreload" crossorigin href="./assets/dialogs-BoXsLTjf.js">
-  <link rel="stylesheet" crossorigin href="./assets/auth-B8vmDYU8.css">
+  <script type="module" crossorigin src="./assets/notepad-BExa7lfg.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/auth-Bm_jTLyY.js">
+  <link rel="modulepreload" crossorigin href="./assets/dialogs-DaSADX0q.js">
+  <link rel="stylesheet" crossorigin href="./assets/auth-C30fz60P.css">
 </head>
 <body>
   <div class="solid-panel manager-container">
@@ -167,10 +167,16 @@
       <div class="editor-container" id="editor-area" style="display: none;">
         <div class="editor-toolbar">
           <input type="text" id="editor-title" class="title-input" placeholder="Note Title...">
-          <button class="icon-btn" id="delete-note-btn" title="Delete Note" style="color: #ef4444;"><i data-lucide="trash-2"></i></button>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="icon-btn" id="save-note-btn" title="Save Note" style="color: var(--accent-color);"><i data-lucide="save"></i></button>
+            <button class="icon-btn" id="delete-note-btn" title="Delete Note" style="color: #ef4444;"><i data-lucide="trash-2"></i></button>
+          </div>
         </div>
         <hr style="border:none; border-top: 1px dashed var(--panel-border); margin-bottom: 1rem;" />
         <textarea id="editor-body" class="body-input" placeholder="Start typing..."></textarea>
+        <div id="word-count-container" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: right;">
+          Words: <span id="word-count">0</span> / 200
+        </div>
       </div>
       
       <div id="editor-empty" class="editor-container" style="justify-content: center; background: transparent; border: none;">

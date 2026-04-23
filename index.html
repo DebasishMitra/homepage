@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Homepage</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <script type="module" crossorigin src="./assets/main-B8m2c0th.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/auth-CsSrB7Sv.js">
-  <link rel="modulepreload" crossorigin href="./assets/dialogs-BoXsLTjf.js">
-  <link rel="stylesheet" crossorigin href="./assets/auth-B8vmDYU8.css">
+  <script type="module" crossorigin src="./assets/main-DiW9ONmJ.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/auth-Bm_jTLyY.js">
+  <link rel="modulepreload" crossorigin href="./assets/dialogs-DaSADX0q.js">
+  <link rel="stylesheet" crossorigin href="./assets/auth-C30fz60P.css">
 </head>
 
 <body>
@@ -113,33 +113,21 @@
           <button type="button" id="voice-search-btn" class="icon-btn" title="Voice Search">
             <i data-lucide="mic"></i>
           </button>
-          <button type="button" id="image-search-btn" class="icon-btn" title="Image Search via Google Lens">
-            <i data-lucide="camera"></i>
-          </button>
           <button type="submit" class="icon-btn" title="Search">
             <i data-lucide="search"></i>
           </button>
         </div>
       </form>
 
-      <!-- Hidden Google Lens Upload Form -->
-      <form id="lens-form" action="https://lens.google.com/upload" method="post" enctype="multipart/form-data"
-        target="_blank" style="display:none;">
-        <input type="file" id="lens-file-input" name="encoded_image" accept="image/jpeg,image/png,image/webp" />
-      </form>
     </div>
+    <div id="quick-access-container"></div>
 
-    <!-- Quick Access Bookmarks -->
-    <div id="bookmarks-grid">
-      <!-- Rendered by JS -->
-    </div>
   </main>
 
   <!-- Footer System Info -->
   <footer>
     <div id="system-info">
-      <span class="sys-info-item"><i data-lucide="globe"></i> IPv4: <span id="ip4-val">Loading...</span></span>
-      <span class="sys-info-item"><i data-lucide="globe-2"></i> IPv6: <span id="ip6-val">Loading...</span></span>
+      <span class="sys-info-item"><i data-lucide="globe"></i> IP: <span id="ip4-val">Loading...</span></span>
       <span class="sys-info-item"><i data-lucide="server"></i> ISP: <span id="isp-val">Loading...</span></span>
       <span class="sys-info-item"><i data-lucide="map-pin"></i> Location: <span id="loc-val">Loading...</span></span>
       <span class="sys-info-item"><i data-lucide="clock"></i> Zone: <span id="tz-val">Loading...</span></span>
@@ -161,9 +149,6 @@
         <hr style="border-color: var(--panel-border); margin: 0.5rem 0;" />
         <button class="waffle-btn" id="open-bookmark-mgr">
           <i data-lucide="bookmark-plus"></i> Manager Bookmarks
-        </button>
-        <button class="waffle-btn" id="add-curr-bookmark">
-          <i data-lucide="plus-circle"></i> Add Custom Bookmark
         </button>
       </div>
     </div>

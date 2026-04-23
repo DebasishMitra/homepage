@@ -1,114 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Homepage Sync</title>
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <style>
-      body {
-        justify-content: center;
-        align-items: center;
-        background-image: 
-          radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.4) 0px, transparent 50%),
-          radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.4) 0px, transparent 50%);
-      }
-      .login-container {
-        width: 100%;
-        max-width: 400px;
-        padding: 2.5rem;
-        text-align: center;
-      }
-      .login-container h1 {
-        margin-bottom: 2rem;
-        font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(to right, var(--accent-color), #8b5cf6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .form-group {
-        margin-bottom: 1.5rem;
-        text-align: left;
-      }
-      .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-      }
-      .form-group input {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid var(--glass-border);
-        border-radius: 8px;
-        color: var(--text-primary);
-        font-size: 1rem;
-        outline: none;
-        transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-      }
-      .form-group input:focus {
-        border-color: var(--accent-color);
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-      }
-      .btn {
-        width: 100%;
-        padding: 0.75rem;
-        background: var(--accent-color);
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background var(--transition-fast);
-        margin-bottom: 1rem;
-      }
-      .btn:hover {
-        background: var(--accent-hover);
-      }
-      .login-footer {
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-      }
-      .login-footer a {
-        color: var(--accent-color);
-        text-decoration: none;
-        cursor: pointer;
-      }
-      .login-footer a:hover {
-        text-decoration: underline;
-      }
-      #error-msg {
-        color: #ef4444;
-        font-size: 0.85rem;
-        margin-bottom: 1rem;
-        min-height: 1.2em;
-      }
-    </style>
-    <script type="module" crossorigin src="./assets/auth-CsSrB7Sv.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/auth-B8vmDYU8.css">
-  </head>
-  <body>
-    <div class="glass-panel login-container">
-      <h1 id="form-title">Welcome Back</h1>
-      <form id="auth-form">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" required placeholder="you@example.com" />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" required placeholder="••••••••" />
-        </div>
-        <div id="error-msg"></div>
-        <button type="submit" class="btn" id="submit-btn">Sign In</button>
-      </form>
-      <div class="login-footer">
-        <span id="toggle-text">Don't have an account? </span>
-        <a id="toggle-mode">Sign Up</a>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <style>
+    body {
+      justify-content: center;
+      align-items: center;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.4) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.4) 0px, transparent 50%);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(to right, var(--accent-color), #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .form-group input:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition-fast);
+      margin-bottom: 1rem;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .login-footer {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .login-footer a {
+      color: var(--accent-color);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .login-footer a:hover {
+      text-decoration: underline;
+    }
+
+    #error-msg {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      min-height: 1.2em;
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/auth-Bm_jTLyY.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/auth-C30fz60P.css">
+</head>
+
+<body>
+  <div class="glass-panel login-container">
+    <h1 id="form-title">Welcome Back</h1>
+    <form id="auth-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required placeholder="you@example.com" />
       </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required placeholder="••••••••" />
+      </div>
+      <div id="error-msg"></div>
+      <button type="submit" class="btn" id="submit-btn">Sign In</button>
+    </form>
+    <div class="login-footer">
+      <span id="toggle-text">Don't have an account? </span>
+      <a id="toggle-mode">Sign Up</a>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
