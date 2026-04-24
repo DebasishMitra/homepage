@@ -2,6 +2,7 @@ import { createIcons, Cloud, Grid, User, Search, Mic, Globe, Server, MapPin, Clo
 import { supabase } from './supabaseClient.js';
 import { checkSession } from './auth.js';
 import { customPrompt, customConfirm } from './dialogs.js';
+import { inject } from '@vercel/analytics';
 
 const lucideIcons = { Cloud, Grid, User, Search, Mic, Globe, Server, MapPin, Clock, X, BookmarkPlus, PlusCircle, LogOut, ChevronDown, Trash2, ExternalLink, Palette, Settings2, Shield, FileText, Link };
 
@@ -11,6 +12,9 @@ function refreshIcons() {
 
 // Init Icons
 refreshIcons();
+
+// Init Vercel Analytics
+inject();
 
 // App State
 let settings = {
