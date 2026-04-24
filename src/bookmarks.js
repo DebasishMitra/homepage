@@ -2,12 +2,16 @@ import { createIcons, BookmarkPlus, Plus, X, Trash2, Edit, Bookmark, Download, U
 import { supabase } from './supabaseClient.js';
 import { checkSession } from './auth.js';
 import { customPrompt, customConfirm } from './dialogs.js';
+import { injectSpeedInsights } from '@vercel/speed-insights';
 
 const lucideIcons = { BookmarkPlus, Plus, X, Trash2, Edit, Bookmark, Download, Upload };
 
 createIcons({
   icons: lucideIcons
 });
+
+// Initialize Vercel Speed Insights
+injectSpeedInsights();
 
 const DEFAULT_CATEGORIES = ['Account', 'Bank', 'Dev', 'Social Media', 'Finance', 'Health', 'Entertainment', 'Shopping', 'Tools', 'AI', 'Share'];
 
