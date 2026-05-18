@@ -3,9 +3,13 @@ import { supabase } from './supabaseClient.js';
 import { checkSession } from './auth.js';
 import { customPrompt, customConfirm } from './dialogs.js';
 import { injectSpeedInsights } from '@vercel/speed-insights';
+import { inject } from '@vercel/analytics';
 
 // Initialize Vercel Speed Insights
 injectSpeedInsights();
+
+// Initialize Vercel Web Analytics
+inject();
 
 const lucideIcons = { Cloud, Grid, User, Search, Mic, Globe, Server, MapPin, Clock, X, BookmarkPlus, PlusCircle, LogOut, ChevronDown, Trash2, ExternalLink, Palette, Settings2, Shield, FileText, Link };
 
