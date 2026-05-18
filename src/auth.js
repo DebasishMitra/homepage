@@ -1,4 +1,8 @@
 import { supabase } from './supabaseClient.js';
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
+// Init Vercel Speed Insights
+injectSpeedInsights();
 
 let isLogin = true;
 
