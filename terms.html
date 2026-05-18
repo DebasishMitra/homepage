@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Use - Premium Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <style>
+    body {
+      justify-content: center;
+      align-items: flex-start;
+      padding: 4rem 1rem;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.25) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.25) 0px, transparent 50%);
+      overflow-y: auto;
+    }
+
+    .legal-container {
+      width: 100%;
+      max-width: 800px;
+      padding: 3rem;
+      margin: 0 auto;
+    }
+
+    .legal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 1.5rem;
+    }
+
+    .legal-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: linear-gradient(to right, var(--accent-color), #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent-color);
+      transform: translateX(-3px);
+    }
+
+    .legal-content section {
+      margin-bottom: 2.5rem;
+    }
+
+    .legal-content h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .legal-content h2 i {
+      color: var(--accent-color);
+      width: 20px;
+      height: 20px;
+    }
+
+    .legal-content p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .legal-content ul {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .legal-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .last-updated {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/terms-BCzlX3tZ.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/style-C1Lu04hq.js">
+  <link rel="modulepreload" crossorigin href="./assets/lucide-eu38zotP.js">
+  <link rel="stylesheet" crossorigin href="./assets/style-BvctDexA.css">
+</head>
+
+<body>
+  <div class="solid-panel legal-container">
+    <header class="legal-header">
+      <div>
+        <h1>Terms of Use</h1>
+        <p class="last-updated" style="margin: 0.5rem 0 0 0;">Last Updated: May 18, 2026</p>
+      </div>
+      <a href="/" class="back-btn">
+        <i data-lucide="arrow-left"></i> Back to Dashboard
+      </a>
+    </header>
+
+    <main class="legal-content">
+      <section>
+        <h2><i data-lucide="file-text"></i> 1. Agreement to Terms</h2>
+        <p>
+          By accessing or using the Premium Homepage Dashboard, you agree to be bound by these Terms of Use and all applicable laws and regulations. 
+          If you do not agree to these terms, you are prohibited from using or accessing this site.
+        </p>
+      </section>
+
+      <section>
+        <h2><i data-lucide="user-check"></i> 2. Account Security & Registration</h2>
+        <p>
+          To access advanced features (such as bookmarks, notebooks, links, and synchronized custom layouts), you must register for an account. 
+          You agree to:
+        </p>
+        <ul>
+          <li>Provide accurate, current, and complete registration information.</li>
+          <li>Safeguard your authentication password securely.</li>
+          <li>Notify the administrator immediately of any suspected unauthorized access or account breach.</li>
+          <li>Accept full responsibility for all activities occurring under your authenticated session.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2><i data-lucide="alert-triangle"></i> 3. Acceptable Use Policy</h2>
+        <p>
+          When using the dashboard and its associated cloud database, you agree **not** to:
+        </p>
+        <ul>
+          <li>Upload or store content that is illegal, defamatory, harmful, or violates third-party intellectual property rights.</li>
+          <li>Perform automated scraping, indexing, or load-testing on the database servers or public API endpoints.</li>
+          <li>Attempt to bypass account authentication filters or exploit code configurations to access other users' private tables.</li>
+          <li>Abuse integrated free public weather or geolocation APIs through automated query spamming.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2><i data-lucide="globe"></i> 4. Third-Party Links and APIs</h2>
+        <p>
+          The dashboard integrates several third-party modules:
+        </p>
+        <ul>
+          <li><strong>External Services:</strong> Weather forecasts (Open-Meteo), geocoding tools, and third-party favicon indexers are owned and operated by their respective entities. We do not guarantee the permanent availability, accuracy, or safety of these external APIs.</li>
+          <li><strong>Quick-Access Hub & User Links:</strong> The dashboard displays shortcuts to external web sites. These linked sites are not under our control, and we bear no responsibility for their content, privacy policies, or cookies.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2><i data-lucide="shield-alert"></i> 5. Disclaimer of Warranties</h2>
+        <p>
+          The service is provided on an **"AS IS"** and **"AS AVAILABLE"** basis without warranties of any kind, whether express or implied. 
+          We do not guarantee that the services, cloud database synchronizations, or widgets will run uninterrupted, entirely secure, or free of software bugs. 
+          Data losses arising from local browser cache purges or server downtime are not subject to compensation.
+        </p>
+      </section>
+
+      <section>
+        <h2><i data-lucide="trash-2"></i> 6. Termination of Services</h2>
+        <p>
+          You are free to stop using the dashboard at any time. 
+          We support instant, self-directed termination:
+        </p>
+        <ul>
+          <li><strong>Account Deletion:</strong> You can permanently wipe your account records directly from your Settings modal. This triggers an immediate, irreversible database cascade deletion that wipes all your cloud profiles, private notes, bookmarks, and links permanently.</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+</body>
+
+</html>

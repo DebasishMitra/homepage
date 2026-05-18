@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Premium Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <style>
+    body {
+      justify-content: center;
+      align-items: flex-start;
+      padding: 4rem 1rem;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.25) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.25) 0px, transparent 50%);
+      overflow-y: auto;
+    }
+
+    .legal-container {
+      width: 100%;
+      max-width: 800px;
+      padding: 3rem;
+      margin: 0 auto;
+    }
+
+    .legal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--panel-border);
+      padding-bottom: 1.5rem;
+    }
+
+    .legal-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      background: linear-gradient(to right, var(--accent-color), #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent-color);
+      transform: translateX(-3px);
+    }
+
+    .legal-content section {
+      margin-bottom: 2.5rem;
+    }
+
+    .legal-content h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .legal-content h2 i {
+      color: var(--accent-color);
+      width: 20px;
+      height: 20px;
+    }
+
+    .legal-content p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .legal-content ul {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .legal-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .last-updated {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/privacy-By1nK8oJ.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/style-C1Lu04hq.js">
+  <link rel="modulepreload" crossorigin href="./assets/lucide-eu38zotP.js">
+  <link rel="stylesheet" crossorigin href="./assets/style-BvctDexA.css">
+</head>
+
+<body>
+  <div class="solid-panel legal-container">
+    <header class="legal-header">
+      <div>
+        <h1>Privacy Policy</h1>
+        <p class="last-updated" style="margin: 0.5rem 0 0 0;">Last Updated: May 18, 2026</p>
+      </div>
+      <a href="/" class="back-btn">
+        <i data-lucide="arrow-left"></i> Back to Dashboard
+      </a>
+    </header>
+
+    <main class="legal-content">
+      <section>
+        <h2><i data-lucide="shield-check"></i> 1. Introduction</h2>
+        <p>
+          Welcome to the Premium Homepage Dashboard. Your privacy is critically important to us. 
+          This Privacy Policy outlines how your data is collected, stored, and protected when you use our homepage tools, widgets, notebooks, and synchronizations.
+        </p>
+      </section>
+
+      <section>
+        <h2><i data-lucide="database"></i> 2. Information We Collect</h2>
+        <p>
+          To provide a personalized, cloud-synchronized dashboard experience, we collect and process the following categories of information:
+        </p>
+        <ul>
+          <li><strong>Authentication Information:</strong> Your secure email and encrypted password credentials managed by our cloud authentication partner (Supabase Auth).</li>
+          <li><strong>User Profiles & Settings:</strong> Your interface configurations (such as dark mode state, glassmorphism panel selections, chosen theme colors, custom background images, and custom time formats).</li>
+          <li><strong>Productivity Data:</strong> All private information entered into dashboard tools including your synchronized cloud Bookmarks, private Notepad notes, and custom Web Links.</li>
+          <li><strong>Geolocation & Network Information:</strong> Real-time network details such as your approximate location (City/Region/Country) and IPv4 address are processed client-side via public geo-mapping APIs to load your local weather reports and system network cards. We do not store your physical locations or log history on our database.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2><i data-lucide="lock"></i> 3. How Data is Stored and Protected</h2>
+        <p>
+          We rely on high-grade cloud services and native client-side storage to protect your private records:
+        </p>
+        <ul>
+          <li><strong>Cloud Database Security:</strong> All user profiles, bookmarks, links, and notepad entries are securely stored on our cloud instance, isolated by strict PostgreSQL **Row Level Security (RLS)** policies. This guarantees that your private database records can only be read, modified, or accessed by your verified authenticated session.</li>
+          <li><strong>Local Browser Storage:</strong> Temporary settings, local fallbacks, and rate-limiting attempt registers are held securely on your device's browser using `localStorage`.</li>
+          <li><strong>Brute Force & Rate Limit Defenses:</strong> Login and signup forms enforce a rigid, browser-resilient rate limiter (maximum 5 attempts per minute) to defend your account credentials from automated brute-force attacks.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2><i data-lucide="share-2"></i> 4. Sharing of Information</h2>
+        <p>
+          We do not sell, rent, or lease your private data to third-party advertisers or brokers. Information is only shared with standard cloud service providers necessary to operate the service:
+        </p>
+        <ul>
+          <li><strong>Supabase API:</strong> Runs authentication verification, securely holds encrypted passwords, and powers data tables.</li>
+          <li><strong>Open-Meteo API:</strong> Approximate geocoding and coordinates are sent to Open-Meteo to dynamically generate local weather forecasts without saving persistent location histories.</li>
+          <li><strong>Vercel Speed Insights:</strong> Dynamically measures page loading performance to optimize site speed and layout stability.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2><i data-lucide="user-minus"></i> 5. Your Rights and Deleting Your Data</h2>
+        <p>
+          You retain full authority over your data. You have the right to request, correct, or permanently wipe your records at any time:
+        </p>
+        <ul>
+          <li><strong>Data Purge (Account Deletion):</strong> You can permanently wipe your account at any moment. Simply go to the **Settings > Security** tab and click **Delete Account**. This safely invokes a secure Postgres cascade deletion that completely deletes your authentication record and instantly wipes all matching bookmarks, notes, and settings.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2><i data-lucide="help-circle"></i> 6. Contact & Inquiries</h2>
+        <p>
+          If you have any questions about this Privacy Policy, your database records, or security defenses, please feel free to reach out to the project administrator.
+        </p>
+      </section>
+    </main>
+  </div>
+
+</body>
+
+</html>
