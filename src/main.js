@@ -562,6 +562,8 @@ engineItems.forEach(item => {
     // Explicit overrides for engines where Google Favicon API fails
     if (hostname.includes('copilot.microsoft.com')) {
       iconUrl = 'https://copilot.microsoft.com/favicon.ico';
+    } else if (hostname.includes('ask.com')) {
+      iconUrl = 'https://www.ask.com/favicon.ico';
     }
     
     // Setup img and span
@@ -753,30 +755,30 @@ fetchSystemInfo();
 
 // --- QUICK ACCESS ---
 const quickAccessSites = [
-  { title: 'Google', url: 'https://www.google.com' },
-  { title: 'YouTube', url: 'https://www.youtube.com' },
-  { title: 'Facebook', url: 'https://www.facebook.com' },
-  { title: 'Instagram', url: 'https://www.instagram.com' },
-  { title: 'WhatsApp', url: 'https://web.whatsapp.com' },
-  { title: 'Twitter', url: 'https://twitter.com' },
-  { title: 'Amazon', url: 'https://www.amazon.com' },
-  { title: 'Wikipedia', url: 'https://www.wikipedia.org' },
-  { title: 'Netflix', url: 'https://www.netflix.com' },
-  { title: 'Reddit', url: 'https://www.reddit.com' },
-  { title: 'LinkedIn', url: 'https://www.linkedin.com' },
-  { title: 'Pinterest', url: 'https://www.pinterest.com' },
-  { title: 'eBay', url: 'https://www.ebay.com' },
-  { title: 'TikTok', url: 'https://www.tiktok.com' },
-  { title: 'Twitch', url: 'https://www.twitch.tv' },
-  { title: 'ChatGPT', url: 'https://chat.openai.com' },
-  { title: 'GitHub', url: 'https://github.com' },
-  { title: 'Stack Overflow', url: 'https://stackoverflow.com' },
-  { title: 'Discord', url: 'https://discord.com' },
-  { title: 'Spotify', url: 'https://www.spotify.com' },
-  { title: 'Quora', url: 'https://www.quora.com' },
-  { title: 'Yahoo', url: 'https://www.yahoo.com' },
-  { title: 'Bing', url: 'https://www.bing.com' },
-  { title: 'DuckDuckGo', url: 'https://duckduckgo.com' }
+  { title: 'GAccount', url: 'https://myaccount.google.com' },
+  { title: 'Microsoft Account', url: 'https://account.microsoft.com/' },
+  { title: 'Gmail', url: 'https://mail.google.com/mail/u/0/#all' },
+  { title: 'Outlook', url: 'https://outlook.live.com/mail/0/' },
+  { title: 'Yahoo Mail', url: 'https://in.mail.yahoo.com/' },
+  { title: 'Discord', url: 'https://discord.com/channels/@me' },
+  { title: 'Instagram', url: 'https://www.instagram.com/' },
+  { title: 'Facebook', url: 'https://www.facebook.com/' },
+  { title: 'WhatsApp', url: 'https://web.whatsapp.com/' },
+  { title: 'Telegram', url: 'https://web.telegram.org/' },
+  { title: 'YouTube', url: 'https://youtube.com/' },
+  { title: 'GitHub', url: 'https://github.com/' },
+  { title: 'X', url: 'https://x.com/' },
+  { title: 'LinkedIn', url: 'https://www.linkedin.com/' },
+  { title: 'Reddit', url: 'https://www.reddit.com/' },
+  { title: 'Pinterest', url: 'https://in.pinterest.com/' },
+  { title: 'Spotify', url: 'https://open.spotify.com/' },
+  { title: 'Quora', url: 'https://www.quora.com/' },
+  { title: 'ChatGPT', url: 'https://chatgpt.com/' },
+  { title: 'Claude', url: 'http://claude.ai/' },
+  { title: 'Gemini', url: 'https://gemini.google.com/' },
+  { title: 'Wikipedia', url: 'https://www.wikipedia.org/' },
+  { title: 'Yandex', url: 'https://yandex.com/' },
+  { title: 'VK', url: 'https://vk.com/' }
 ];
 
 function renderQuickAccess() {
@@ -784,14 +786,42 @@ function renderQuickAccess() {
   if (!container) return;
 
   container.innerHTML = quickAccessSites.map(site => {
-    let domain = new URL(site.url).hostname;
+    let url;
+    try {
+      url = new URL(site.url);
+    } catch(e) {
+      return '';
+    }
+    const hostname = url.hostname;
     
-    // Clean up subdomains for better favicon matching (e.g., web.whatsapp.com -> whatsapp.com)
-    let iconDomain = domain;
-    if (domain.includes('whatsapp.com')) iconDomain = 'whatsapp.com';
-    if (domain.includes('openai.com')) iconDomain = 'openai.com';
-
-    const iconUrl = `https://www.google.com/s2/favicons?domain=${iconDomain}&sz=64`;
+    // Explicit direct overrides for sites where Google Favicon API fails or subdomains exist
+    let iconUrl = '';
+    let targetDomain = hostname;
+    
+    if (hostname.includes('account.microsoft.com')) {
+      targetDomain = 'microsoft.com';
+    } else if (hostname.includes('myaccount.google.com')) {
+      targetDomain = 'google.com';
+    } else if (hostname.includes('gemini.google.com')) {
+      targetDomain = 'google.com';
+    } else if (hostname.includes('chatgpt.com')) {
+      targetDomain = 'openai.com'; // OpenAI has the cached ChatGPT logo
+    } else if (hostname.includes('in.mail.yahoo.com')) {
+      targetDomain = 'yahoo.com';
+    } else if (hostname.includes('mail.google.com')) {
+      targetDomain = 'mail.google.com'; // Keep subdomain to get Gmail icon via Google's proxy
+    } else if (hostname.includes('outlook.live.com')) {
+      targetDomain = 'outlook.live.com'; // Keep subdomain to get Outlook icon via Google's proxy
+    } else {
+      // General subdomain cleanup (e.g. web.whatsapp.com -> whatsapp.com, in.pinterest.com -> pinterest.com)
+      let parts = hostname.split('.');
+      if (parts.length > 2) {
+        targetDomain = parts.slice(-2).join('.');
+      }
+    }
+    
+    // Route everything through Google's server-side proxy to bypass same-origin/same-site blocks
+    iconUrl = `https://www.google.com/s2/favicons?domain=${targetDomain}&sz=64`;
     
     return `
       <a href="${site.url}" class="quick-access-item" target="${settings.searchNewTab ? '_blank' : '_self'}">
