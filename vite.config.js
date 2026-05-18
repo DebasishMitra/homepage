@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 export default defineConfig({
   base: '',
-  plugins: [],
+  plugins: [cloudflare()],
   build: {
     rollupOptions: {
       input: {
