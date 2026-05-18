@@ -4,10 +4,10 @@ An elegant, premium-grade browser homepage dashboard built using **Vanilla HTML5
 
 ---
 
-**Deployement**
-* [Vercel](homepage-debasishmitra.vercel.app)
-* [Cloudflare Pages](homepage.debasishmitra7452.workers.dev)
-* [Netlify](homepage-search.netlify.app)
+****Deployment**
+* [Vercel](https://homepage-debasishmitra.vercel.app)
+* [Cloudflare Pages](https://homepage.debasishmitra7452.workers.dev)
+* [Netlify](https://homepage-search.netlify.app)
 
 ---
 
@@ -32,8 +32,8 @@ An elegant, premium-grade browser homepage dashboard built using **Vanilla HTML5
 ### 🛠️ Built-in Productivity Apps
 * **Smart Bookmark Manager**: Categorized bookmark library synced seamlessly with the cloud database.
 * **Notepad Editor**: Auto-saving digital notepad to capture quick thoughts.
-* **Web Link Hub**: Dedicated link shortcuts module with direct launch capabilities.
-* **System Footers**: Displays real-time geolocated network diagnostics including IPv4 addresses, ISPs, exact coordinate coordinates, and timezones.
+* **Web Link Hub**: Dedicated link shortcuts module with 24 high-fidelity target sites.
+* **System Footers**: Displays real-time geolocated network diagnostics including IPv4 addresses, ISPs, exact coordinates, and timezones.
 * **Live Weather Widget**: Current temperature indicators coupled with interactive widgets that open to expose feels-like index, humidity levels, wind speeds, and a 7-day extended forecast grid (powered by the **Open-Meteo** API).
 
 ---
@@ -43,6 +43,8 @@ An elegant, premium-grade browser homepage dashboard built using **Vanilla HTML5
 * **Secure Supabase Authentication**: Email and password-protected accounts for settings and data encryption.
 * **Browser-Resilient Rate Limiting**: Built-in protection on login and sign-up windows (maximum **5 attempts per minute**). Rate-limit states are saved directly to `localStorage`, rendering brute-force attacks useless even if they refresh the tab or reload the browser.
 * **Safe Account Deletion**: Users can self-delete their profiles directly from the Account tab. Account deletion is safely orchestrated via a secure PostgreSQL function run as a `SECURITY DEFINER`.
+* **CORS & Same-Origin Bypass Proxying**: Dynamic Quick Access icons automatically proxy through Google's favicon caching layer, utilizing optimized domain lookups to elegantly bypass strict cross-origin policies (like `NotSameOrigin` and `NotSameSite` HTTP blocks) enforced by portals like Claude and Gmail.
+* **Legal Compliance Integration**: Integrated compliance footers in both `login.html` and `index.html` referencing custom, theme-compliant **Privacy Policy** and **Terms of Use** sub-panels.
 
 ---
 
@@ -86,6 +88,38 @@ Ensure you have **Node.js** (v18 or higher) and **npm** installed on your system
 
 ---
 
+## 🌐 Setting as Browser Homepage & New Tab
+
+To experience the premium dashboard every time you open your browser or open a new tab, configure your browser settings using the steps below:
+
+### 🌐 Google Chrome
+1. Click the **three dots menu** (top right) and open **Settings**.
+2. Navigate to **On startup** in the left sidebar.
+3. Select **Open a specific page or set of pages**.
+4. Click **Add a new page**, enter your local dev URL (`http://localhost:5173`) or deployed production URL, and click **Add**.
+5. *Optional (New Tab page override)*: Chrome does not natively support custom URLs for new tabs. To enable this, install the lightweight Chrome extension **"Custom New Tab URL"** from the Chrome Web Store and set your dashboard URL in it.
+
+### 🧭 Microsoft Edge
+1. Click the **three dots menu** and open **Settings**.
+2. Navigate to **Start, home, and new tabs** in the sidebar.
+3. Under **When Edge starts**, select **Open these pages** and click **Add a new page**. Input your homepage URL.
+4. Under **Home button**, toggle **Show home button on toolbar**, select the secondary input option, and enter your homepage URL.
+
+### 🦊 Mozilla Firefox
+1. Click the **hamburger menu** (top right) and open **Settings**.
+2. Select **Home** in the left sidebar.
+3. Locate **Homepage and new windows** under *New Windows and Tabs*.
+4. Change the dropdown menu selection from *Firefox Home (Default)* to **Custom URLs...**.
+5. Paste your homepage URL in the input field.
+
+### 🦁 Brave Browser
+1. Open **Settings** from the main menu.
+2. Select **Get started** in the left-hand navigation.
+3. Under **On startup**, select **Open a specific page or set of pages**.
+4. Click **Add a new page** and enter your homepage URL.
+
+---
+
 ## 🗄️ Database Setup (Supabase)
 
 To enable data persistence for your profile, settings, bookmarks, and links, you must execute the database schemas on your Supabase instance:
@@ -109,7 +143,9 @@ To enable data persistence for your profile, settings, bookmarks, and links, you
 ├── login.html            # Gateway signup & login page
 ├── notepad.html          # Notepad editor page interface
 ├── package.json          # Dependency and build script configuration
+├── privacy.html          # Privacy Policy page layout (CORS & Same-Origin bypassed)
 ├── supabase_setup.sql    # Database migration scripts and access policies
+├── terms.html            # Terms of Use page layout (fully compliant)
 ├── vite.config.js        # Vite compiler configurations
 └── src/
     ├── auth.js           # Auth states and browser-resilient rate-limiting

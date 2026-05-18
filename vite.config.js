@@ -13,6 +13,8 @@ export default defineConfig({
         login: resolve(__dirname, 'login.html'),
         bookmarks: resolve(__dirname, 'bookmarks.html'),
         notepad: resolve(__dirname, 'notepad.html'),
+        privacy: resolve(__dirname, 'privacy.html'),
+        terms: resolve(__dirname, 'terms.html'),
       },
     },
   },
