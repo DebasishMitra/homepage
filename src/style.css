@@ -653,9 +653,21 @@ footer {
   align-items: center;
   gap: 1.5rem;
   padding: 1.5rem;
-  background: var(--glass-bg);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 16px;
   margin-bottom: 2rem;
+  border: 1px solid var(--panel-border);
+  transition: all var(--transition-smooth);
+}
+
+.light-mode .profile-overview {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+body.glass-mode .profile-overview {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
 }
 
