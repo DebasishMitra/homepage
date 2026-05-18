@@ -5,10 +5,11 @@ An elegant, premium-grade browser homepage dashboard built using **Vanilla HTML5
 ---
 
 **Deployement**
-homepage-debasishmitra.vercel.app
-homepage.debasishmitra7452.workers.dev
-homepage-search.netlify.app
+* homepage-debasishmitra.vercel.app
+* homepage.debasishmitra7452.workers.dev
+* homepage-search.netlify.app
 
+---
 
 ## 🌟 Key Features
 
