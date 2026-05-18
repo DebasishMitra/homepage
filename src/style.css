@@ -75,6 +75,15 @@ body {
   border: 1px solid var(--panel-border);
   border-radius: 16px;
   box-shadow: var(--panel-shadow);
+  transition: all var(--transition-smooth);
+}
+
+body.glass-mode .solid-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 /* Header */

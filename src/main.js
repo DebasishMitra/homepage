@@ -27,6 +27,7 @@ let settings = {
   customBgColor: '#0b1120',
   customAccentColor: '#3b82f6',
   searchNewTab: false,
+  glassPanel: false,
   notepadText: ''
 };
 
@@ -100,7 +101,8 @@ async function saveState() {
         defaultSearchEngine: settings.defaultSearchEngine,
         customBgColor: settings.customBgColor,
         customAccentColor: settings.customAccentColor,
-        searchNewTab: settings.searchNewTab
+        searchNewTab: settings.searchNewTab,
+        glassPanel: settings.glassPanel
       },
       profile_name: settings.profileName,
       profile_icon_url: settings.profileIconUrl,
@@ -138,6 +140,7 @@ const closeBtns = document.querySelectorAll('.modal-close');
 
 // Settings Inputs
 const darkModeToggle = document.getElementById('dark-mode-toggle');
+const glassPanelToggle = document.getElementById('glass-panel-toggle');
 const nameInput = document.getElementById('profile-name');
 const profileUpload = document.getElementById('profile-upload');
 const bgUpload = document.getElementById('bg-upload');
@@ -217,6 +220,7 @@ clockEl.addEventListener('click', () => {
 function applySettings() {
   // Appearance
   bodyEl.classList.toggle('light-mode', !settings.darkMode);
+  bodyEl.classList.toggle('glass-mode', !!settings.glassPanel);
   
   if (settings.customBgColor) document.documentElement.style.setProperty('--bg-color', settings.customBgColor);
   if (settings.customAccentColor) document.documentElement.style.setProperty('--accent-color', settings.customAccentColor);
@@ -248,6 +252,7 @@ function applySettings() {
 
   // Bind values
   darkModeToggle.checked = settings.darkMode;
+  if (glassPanelToggle) glassPanelToggle.checked = !!settings.glassPanel;
   nameInput.value = settings.profileName;
   clockSelect.value = settings.clockStyle;
   timeFormatSelect.value = settings.timeFormat;
@@ -290,6 +295,7 @@ async function handleSettingChange() {
   settings.customBgColor = bgColorPicker.value;
   settings.customAccentColor = accentColorPicker.value;
   settings.searchNewTab = searchNewTabToggle.checked;
+  if(glassPanelToggle) settings.glassPanel = glassPanelToggle.checked;
   if(defaultSearchSelect) settings.defaultSearchEngine = defaultSearchSelect.value;
   
   applySettings();
@@ -306,7 +312,7 @@ wLocationInput.addEventListener('change', async () => {
   }
 });
 
-[darkModeToggle, clockSelect, timeFormatSelect, bgColorPicker, accentColorPicker, searchNewTabToggle, defaultSearchSelect].forEach(el => {
+[darkModeToggle, glassPanelToggle, clockSelect, timeFormatSelect, bgColorPicker, accentColorPicker, searchNewTabToggle, defaultSearchSelect].forEach(el => {
   if(el) el.addEventListener('change', handleSettingChange);
 });
 
@@ -475,6 +481,25 @@ document.getElementById('logout-btn').addEventListener('click', async () => {
     window.location.href = '/login.html';
   }
 });
+
+const deleteAccountBtn = document.getElementById('delete-account-btn');
+if (deleteAccountBtn) {
+  deleteAccountBtn.addEventListener('click', async () => {
+    if (await customConfirm("Are you sure you want to completely delete your account? This action cannot be undone.")) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        // Attempt to call RPC function 'delete_user'
+        const { error } = await supabase.rpc('delete_user');
+        if (error) {
+          alert("Could not delete account. Make sure the database RPC 'delete_user' exists. Error: " + error.message);
+        } else {
+          await supabase.auth.signOut();
+          window.location.href = '/login.html';
+        }
+      }
+    }
+  });
+}
 
 // --- Tab Switching Logic ---
 const tabBtns = document.querySelectorAll('.settings-nav-btn');
