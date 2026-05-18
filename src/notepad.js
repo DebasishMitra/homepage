@@ -2,6 +2,10 @@ import { createIcons, BookOpen, Plus, X, Trash2, Edit3, Save } from 'lucide';
 import { supabase } from './supabaseClient.js';
 import { checkSession } from './auth.js';
 import { customConfirm } from './dialogs.js';
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
+// Initialize Vercel Speed Insights
+injectSpeedInsights();
 
 createIcons({
   icons: { BookOpen, Plus, X, Trash2, Edit3, Save }

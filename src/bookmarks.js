@@ -2,6 +2,10 @@ import { createIcons, BookmarkPlus, Plus, X, Trash2, Edit, Bookmark, Download, U
 import { supabase } from './supabaseClient.js';
 import { checkSession } from './auth.js';
 import { customPrompt, customConfirm } from './dialogs.js';
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
+// Initialize Vercel Speed Insights
+injectSpeedInsights();
 
 const lucideIcons = { BookmarkPlus, Plus, X, Trash2, Edit, Bookmark, Download, Upload };
 
