@@ -148,6 +148,34 @@ To enable data persistence for your profile, settings, bookmarks, and links, you
    - **Bookmarks, Notes, & Web Links tables**: All secured with **Row Level Security (RLS)** policies so users can only access their own private rows.
    - **`delete_user()` Function**: A Postgres function required to safely delete an active user's credentials on request.
 
+## 🧩 Building as a Native Browser Extension (Chrome / Edge / Brave)
+
+You can turn this entire homepage website into a native Manifest V3 browser extension so it runs locally and **replaces your default New Tab page** instantly. 
+
+We have already configured a fully functional `manifest.json` under the `/public` directory. Follow the steps below to load it into your browser:
+
+### 📦 1. Build the Extension Bundle
+Run the production build command in your terminal to compile the code and assets:
+```bash
+npm run build
+```
+This compiles all files and copies the `manifest.json` into the output **`dist/`** directory. The `dist/` directory is now a fully qualified, self-contained browser extension!
+
+### 🔧 2. Load into Your Browser
+
+#### 🌐 Google Chrome & Brave
+1. Open the browser and go to `chrome://extensions` (or `brave://extensions`).
+2. Enable **Developer mode** using the toggle switch in the top-right corner.
+3. Click the **Load unpacked** button in the top-left corner.
+4. Select the **`dist/`** directory inside your project folder.
+5. *Open a new tab!* The browser will automatically load your premium homepage locally with instant speed.
+
+#### 🧭 Microsoft Edge
+1. Open Edge and go to `edge://extensions`.
+2. Toggle **Developer mode** (bottom-left corner sidebar).
+3. Click **Load unpacked** and select the **`dist/`** folder.
+4. Open a new tab to see your dashboard active!
+
 ---
 
 ## 📂 Project Structure

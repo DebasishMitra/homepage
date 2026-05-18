@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Premium Dashboard Homepage",
+  "version": "1.0.0",
+  "description": "An elegant, premium-grade browser homepage dashboard and productivity hub.",
+  "icons": {
+    "128": "favicon.svg"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": []
+}
