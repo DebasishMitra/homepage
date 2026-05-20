@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /login.html
+Allow: /privacy.html
+Allow: /terms.html
+Disallow: /bookmarks.html
+Disallow: /notepad.html
+
+# Sitemap URL
+Sitemap: https://homepage.urdelete.eu.cc/sitemap.xml

@@ -1,1 +1,0 @@
-import"./style-C1Lu04hq.js";import{B as e,D as t,O as n,a as r,c as i,f as a,s as o,t as s}from"./lucide-eu38zotP.js";s({icons:{ArrowLeft:e,FileText:n,UserCheck:r,AlertTriangle:o,Globe:t,ShieldAlert:a,Trash2:i}});
