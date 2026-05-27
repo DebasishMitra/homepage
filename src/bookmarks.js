@@ -404,7 +404,29 @@ async function importFromJSON(jsonText) {
     const data = JSON.parse(jsonText);
     if (data.bookmarks && Array.isArray(data.bookmarks)) {
       if (await customConfirm(`Import ${data.bookmarks.length} bookmarks? This will merge with existing ones.`)) {
-        bookmarks = [...bookmarks, ...data.bookmarks];
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        let newBookmarks = data.bookmarks.map(b => {
+          const { id, user_id, created_at, ...rest } = b;
+          return session ? { ...rest, user_id: session.user.id } : rest;
+        });
+
+        if (session) {
+          const { data: inserted, error } = await supabase
+            .from('bookmarks')
+            .insert(newBookmarks)
+            .select();
+          
+          if (!error && inserted) {
+             bookmarks = [...bookmarks, ...inserted];
+          } else {
+             console.error("Import sync error:", error);
+             bookmarks = [...bookmarks, ...newBookmarks];
+          }
+        } else {
+          bookmarks = [...bookmarks, ...newBookmarks];
+        }
+
         if (data.categories && Array.isArray(data.categories)) {
           data.categories.forEach(c => {
             if (!categories.includes(c)) categories.push(c);
@@ -452,10 +474,32 @@ async function importFromHTML(htmlText) {
 
     if (importedBookmarks.length > 0) {
       if (await customConfirm(`Detected ${importedBookmarks.length} bookmarks. Import them?`)) {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        let newBookmarks = importedBookmarks.map(b => {
+          return session ? { ...b, user_id: session.user.id } : b;
+        });
+
+        if (session) {
+          const { data: inserted, error } = await supabase
+            .from('bookmarks')
+            .insert(newBookmarks)
+            .select();
+          
+          if (!error && inserted) {
+             bookmarks = [...bookmarks, ...inserted];
+          } else {
+             console.error("Import sync error:", error);
+             bookmarks = [...bookmarks, ...newBookmarks];
+          }
+        } else {
+          bookmarks = [...bookmarks, ...newBookmarks];
+        }
+
         importedBookmarks.forEach(b => {
-          bookmarks.push(b);
           if (!categories.includes(b.category)) categories.push(b.category);
         });
+        
         await saveState();
         renderCategories();
         renderBookmarks();
